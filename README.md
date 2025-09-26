@@ -8,3 +8,6 @@ REST API that will work with aiven postgresql
 - register
 - todo
 - websocket
+
+## environments
+it will run with two possible environments, local with in memory database and production with aiven postgresql
