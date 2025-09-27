@@ -86,8 +86,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             },
             OnMessageReceived = context =>
             {
-                Console.WriteLine($"📥 Token received: {context.Token}");
-                jwtLogger.LogInformation("📥 Token received: {Token}", context.Token);
+                // OnMessageReceived event is triggered before the token is extracted meanign token would be null in the log
+                //jwtLogger.LogInformation("📥 Token received: {Token}", context.Token);
                 return Task.CompletedTask;
             }
         };
