@@ -45,7 +45,11 @@ Console.BackgroundColor = ConsoleColor.Black;
 Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 Console.ResetColor();
 System.Diagnostics.Debug.WriteLine("🌿 Environment: Development");
+var loggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+var jwtLogger = loggerFactory.CreateLogger("JwtBearer");
+Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
 
+builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Information);
 
@@ -71,16 +75,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnAuthenticationFailed = context =>
             {
                 Console.WriteLine($"❌ Authentication failed: {context.Exception.Message}");
+                jwtLogger.LogError(context.Exception, "❌ Authentication failed");
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>
             {
                 Console.WriteLine($"✅ Token validated for: {context.Principal.Identity.Name}");
+                jwtLogger.LogInformation("✅ Token validated for: {User}", context.Principal.Identity?.Name);
                 return Task.CompletedTask;
             },
             OnMessageReceived = context =>
             {
                 Console.WriteLine($"📥 Token received: {context.Token}");
+                jwtLogger.LogInformation("📥 Token received: {Token}", context.Token);
                 return Task.CompletedTask;
             }
         };
