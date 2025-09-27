@@ -5,4 +5,5 @@ obj/
 *.vs/
 *.db
 .env
+appsettings.Development.json
 appsettings.Production.json

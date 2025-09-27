@@ -60,7 +60,7 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer(); // Required for Swagger
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -94,7 +94,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
         };
     });
-//builder.WebHost.UseUrls("http://localhost:5010");
 builder.Services.AddSingleton<PilotTowerWebSocketHandler>();
 
 var app = builder.Build();
